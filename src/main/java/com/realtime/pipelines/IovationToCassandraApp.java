@@ -129,8 +129,6 @@ public class IovationToCassandraApp {
             JSONObject message = new JSONObject(jsonMessage);
             JSONObject filteredMessage = filterEngine.filter(message);
             if (filteredMessage != null) {
-                //log.info("MENSAJE filtrado directamente: " + message.toString());
-                // Log para mostrar el mensaje filtrado
                 c.output(filteredMessage.toString());
                 log.info("MENSAJE después de filtrar: " + filteredMessage.toString());
 
