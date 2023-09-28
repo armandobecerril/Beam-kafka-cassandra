@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  # Servicio de Flink JobManager
+  flink-jobmanager:
+    image: apache/flink:1.16.2-java11
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+
+  # Servicio de Flink TaskManager 1
+  flink-taskmanager-1:
+    image: apache/flink:1.16.2-java11
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+
+  # Servicio de Flink TaskManager 2
+  flink-taskmanager-2:
+    image: apache/flink:1.16.2-java11
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-jobmanager
+
+  # Servicio de Apache Beam Flink JobServer
+  beam-flink-jobserver:
+    image: apache/beam_flink1.16_job_server
+    ports:
+      - "8099:8099" # Asumiendo que el job server utiliza un puerto diferente; si no es así, cambia este valor
+    depends_on:
+      - flink-jobmanager
+
+  # Servicio de Apache Beam SDK para Java
+  beam-java-sdk:
+    image: apache/beam_java11_sdk:latest
+    command: ["/bin/bash"]
+
+  # Servicio de Apache Beam SDK para Python
+  beam-python-sdk:
+    image: apache/beam_python3.7_sdk:2.25.0
+    command: ["/bin/bash"]
+
+

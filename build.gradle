@@ -1,0 +1,73 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+// https://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+// <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
+// option. This file may not be copied, modified, or distributed
+// except according to those terms.
+
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/releases/"
+    }
+}
+
+application {
+    mainClass = 'com.realtime.pipelines.IovationToCassandraApp'
+}
+
+test {
+    // JUnit 4.
+    useJUnit()
+}
+
+dependencies {
+    // App dependencies.
+    implementation "org.apache.beam:beam-sdks-java-core:2.50.0"
+    implementation "org.apache.beam:beam-runners-direct-java:2.50.0"
+    implementation "org.slf4j:slf4j-jdk14:1.7.32"
+    implementation "org.apache.beam:beam-sdks-java-io-kafka:2.50.0"
+    implementation "io.confluent:kafka-avro-serializer:5.3.2"
+    implementation "io.confluent:kafka-schema-registry-client:5.3.2"
+    implementation "io.confluent:kafka-schema-registry-client:5.3.2"
+    implementation "io.confluent:kafka-avro-serializer:5.3.2"
+    implementation "org.json:json:20230618"
+    // Dependencias de Cassandra
+    implementation "com.datastax.oss:java-driver-core:4.12.0"
+    // Dependencias de Apache Beam para Cassandra
+    implementation "org.apache.beam:beam-sdks-java-io-cassandra:2.40.0"
+    implementation "io.dropwizard.metrics:metrics-core:4.0.2"
+    implementation "io.dropwizard.metrics:metrics-jmx:4.0.2"
+    // SLF4J API
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    // Logback Classic (implements SLF4J)
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
+
+    // Tests dependencies.
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+}
+
+// Package a self-contained jar file.
+jar {
+    archiveBaseName = 'pipelineIovationToCassandra'
+    destinationDirectory = file('build')
+    manifest {
+        attributes 'Main-Class': 'com.realtime.pipelines.IovationToCassandraApp'
+    }
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

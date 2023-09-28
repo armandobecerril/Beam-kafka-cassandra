@@ -1,0 +1,20 @@
+{
+  "inputTopic": "enrichment.fct.iovation.v1",
+  "cassandraNodes": "cassandra://54.152.221.55:9042",
+  "cassandraKeyspace": "iovation_data_source",
+  "cassandraTable": "iovation_table2_demo",
+  "fields": [
+    "content.data.id",
+    "content.data.result.details.device.os",
+    "content.data.result.details.realIp.isp",
+    "content.data.result.details.realIp.address",
+    "content.data.result.details.realIp.ipLocation.city"
+  ],
+  "tableSchema": {
+    "id": "UUID",
+    "os": "TEXT",
+    "isp": "TEXT",
+    "address": "INET",
+    "city": "TEXT"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "inputTopic": "enrichment.fct.iovation.v1",
+  "cassandraNodes": "cassandra://54.152.221.55:9042",
+  "cassandraKeyspace": "iovation_data_source",
+  "cassandraTable": "iovation_default",
+  "fields": [
+    "content.data.id",
+    "content.data.result.details.device.os",
+    "content.data.result.details.realIp.isp"
+  ],
+  "tableSchema": {
+    "id": "UUID",
+    "os": "TEXT",
+    "isp": "TEXT"
+  }
+}
+
+
